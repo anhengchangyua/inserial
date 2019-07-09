@@ -2,17 +2,15 @@ package com.zhy.cloud.service;
 
 
 import com.zhy.cloud.dto.UserDto;
-import com.zhy.cloud.model.User;
+import com.zhy.cloud.model.SysUser;
 
 public interface UserService {
 
-	User saveUser(UserDto userDto);
-	
-	User updateUser(UserDto userDto);
+	SysUser saveUser(UserDto userDto);
 
-	String passwordEncoder(String credentials, String salt);
+	SysUser updateUser(UserDto userDto);
 
-	User getUser(String username);
+	SysUser getUser(String username);
 
 	void changePassword(String username, String oldPassword, String newPassword);
 

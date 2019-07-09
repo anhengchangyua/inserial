@@ -3,16 +3,16 @@ package com.zhy.cloud.model;
 public class SysLogs extends BaseEntity<Long> {
 
 	private static final long serialVersionUID = -7809315432127036583L;
-	private User user;
+	private SysUser user;
 	private String module;
 	private Boolean flag;
 	private String remark;
 
-	public User getUser() {
+	public SysUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(SysUser user) {
 		this.user = user;
 	}
 
@@ -41,3 +41,4 @@ public class SysLogs extends BaseEntity<Long> {
 	}
 
 }
+

@@ -4,16 +4,16 @@ package com.zhy.cloud.controller;
 import com.zhy.cloud.annotation.LogAnnotation;
 import com.zhy.cloud.dao.UserDao;
 import com.zhy.cloud.dto.UserDto;
-import com.zhy.cloud.model.User;
+import com.zhy.cloud.model.SysUser;
 import com.zhy.cloud.service.UserService;
 import com.zhy.cloud.utils.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -36,9 +36,9 @@ public class UserController {
 	@LogAnnotation
 	@PostMapping
 	@ApiOperation(value = "保存用户")
-	@RequiresPermissions("sys:user:add")
-	public User saveUser(@RequestBody UserDto userDto) {
-		User u = userService.getUser(userDto.getUsername());
+	@PreAuthorize("hasAuthority('sys:user:add')")
+	public SysUser saveUser(@RequestBody UserDto userDto) {
+		SysUser u = userService.getUser(userDto.getUsername());
 		if (u != null) {
 			throw new IllegalArgumentException(userDto.getUsername() + "已存在");
 		}
@@ -49,8 +49,8 @@ public class UserController {
 	@LogAnnotation
 	@PutMapping
 	@ApiOperation(value = "修改用户")
-	@RequiresPermissions("sys:user:add")
-	public User updateUser(@RequestBody UserDto userDto) {
+	@PreAuthorize("hasAuthority('sys:user:add')")
+	public SysUser updateUser(@RequestBody UserDto userDto) {
 		return userService.updateUser(userDto);
 	}
 
@@ -58,7 +58,7 @@ public class UserController {
 	@PutMapping(params = "headImgUrl")
 	@ApiOperation(value = "修改头像")
 	public void updateHeadImgUrl(String headImgUrl) {
-		User user = UserUtil.getCurrentUser();
+		SysUser user = UserUtil.getLoginUser();
 		UserDto userDto = new UserDto();
 		BeanUtils.copyProperties(user, userDto);
 		userDto.setHeadImgUrl(headImgUrl);
@@ -70,14 +70,14 @@ public class UserController {
 	@LogAnnotation
 	@PutMapping("/{username}")
 	@ApiOperation(value = "修改密码")
-	@RequiresPermissions("sys:user:password")
+	@PreAuthorize("hasAuthority('sys:user:password')")
 	public void changePassword(@PathVariable String username, String oldPassword, String newPassword) {
 		userService.changePassword(username, oldPassword, newPassword);
 	}
 
 //	@GetMapping
 //	@ApiOperation(value = "用户列表")
-//	@RequiresPermissions("sys:user:query")
+//	@PreAuthorize("hasAuthority('sys:user:query')")
 //	public PageTableResponse listUsers(PageTableRequest request) {
 //		return new PageTableHandler(new CountHandler() {
 //
@@ -88,8 +88,8 @@ public class UserController {
 //		}, new ListHandler() {
 //
 //			@Override
-//			public List<User> list(PageTableRequest request) {
-//				List<User> list = userDao.list(request.getParams(), request.getOffset(), request.getLimit());
+//			public List<SysUser> list(PageTableRequest request) {
+//				List<SysUser> list = userDao.list(request.getParams(), request.getOffset(), request.getLimit());
 //				return list;
 //			}
 //		}).handle(request);
@@ -97,14 +97,14 @@ public class UserController {
 
 	@ApiOperation(value = "当前登录用户")
 	@GetMapping("/current")
-	public User currentUser() {
-		return UserUtil.getCurrentUser();
+	public SysUser currentUser() {
+		return UserUtil.getLoginUser();
 	}
 
 	@ApiOperation(value = "根据用户id获取用户")
 	@GetMapping("/{id}")
-	@RequiresPermissions("sys:user:query")
-	public User user(@PathVariable Long id) {
+	@PreAuthorize("hasAuthority('sys:user:query')")
+	public SysUser user(@PathVariable Long id) {
 		return userDao.getById(id);
 	}
 

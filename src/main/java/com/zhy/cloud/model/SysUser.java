@@ -1,18 +1,15 @@
 package com.zhy.cloud.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.util.Date;
 
-public class User extends BaseEntity<Long> {
+public class SysUser extends BaseEntity<Long> {
 
 	private static final long serialVersionUID = -6525908145032868837L;
 
 	private String username;
 	private String password;
-	@JsonIgnore
-	private String salt;
 	private String nickname;
 	private String headImgUrl;
 	private String phone;
@@ -22,6 +19,7 @@ public class User extends BaseEntity<Long> {
 	private Date birthday;
 	private Integer sex;
 	private Integer status;
+	private String intro;
 
 	public String getUsername() {
 		return username;
@@ -37,14 +35,6 @@ public class User extends BaseEntity<Long> {
 
 	public void setPassword(String password) {
 		this.password = password;
-	}
-
-	public String getSalt() {
-		return salt;
-	}
-
-	public void setSalt(String salt) {
-		this.salt = salt;
 	}
 
 	public String getNickname() {
@@ -109,6 +99,14 @@ public class User extends BaseEntity<Long> {
 
 	public void setStatus(Integer status) {
 		this.status = status;
+	}
+
+	public String getIntro() {
+		return intro;
+	}
+
+	public void setIntro(String intro) {
+		this.intro = intro;
 	}
 
 	public interface Status {

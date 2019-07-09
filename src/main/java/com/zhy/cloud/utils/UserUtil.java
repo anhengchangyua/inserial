@@ -1,42 +1,29 @@
 package com.zhy.cloud.utils;
 
 
-import com.zhy.cloud.constants.UserConstants;
-import com.zhy.cloud.model.Permission;
-import com.zhy.cloud.model.User;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.session.Session;
-import org.apache.shiro.subject.Subject;
+import com.zhy.cloud.dto.LoginUser;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.List;
 
 public class UserUtil {
 
-    public static User getCurrentUser() {
-        User user = (User) getSession().getAttribute(UserConstants.LOGIN_USER);
+    public static LoginUser getLoginUser() {
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null) {
+            if (authentication instanceof AnonymousAuthenticationToken) {
+                return null;
+            }
 
-        return user;
+            if (authentication instanceof UsernamePasswordAuthenticationToken) {
+                return (LoginUser) authentication.getPrincipal();
+            }
+        }
+
+        return null;
     }
 
-    public static void setUserSession(User user) {
-        getSession().setAttribute(UserConstants.LOGIN_USER, user);
-    }
-
-    @SuppressWarnings("unchecked")
-    public static List<Permission> getCurrentPermissions() {
-        List<Permission> list = (List<Permission>) getSession().getAttribute(UserConstants.USER_PERMISSIONS);
-
-        return list;
-    }
-
-    public static void setPermissionSession(List<Permission> list) {
-        getSession().setAttribute(UserConstants.USER_PERMISSIONS, list);
-    }
-
-    public static Session getSession() {
-        Subject currentUser = SecurityUtils.getSubject();
-        Session session = currentUser.getSession();
-
-        return session;
-    }
 }
