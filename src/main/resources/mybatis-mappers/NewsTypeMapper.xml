@@ -29,7 +29,7 @@
 
 	<update id="update">
 		update news_type t
-		<set>
+		<set>阿水打
 			<if test="Id != null">
 				Id = #{Id},
 			</if>
