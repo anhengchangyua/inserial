@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
  * 权限相关接口
  *
  */
-@SuppressWarnings("ALL")
+
 @Api(tags = "权限")
 @RestController
 @RequestMapping("/permissions")

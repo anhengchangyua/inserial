@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhy.cloud.dao.NewsTypeDao">
+
+	<sql id="where">
+		<where>
+			<if test="params.Id != null and params.Id != ''">
+				and Id = #{params.Id}
+			</if>
+			<if test="params.categories != null and params.categories != ''">
+				and categories = #{params.categories}
+			</if>
+			<if test="params.sort != null and params.sort != ''">
+				and sort = #{params.sort}
+			</if>
+
+		</where>
+	</sql>
+
+	<select id="count" resultType="int">
+		select count(1) from news_type t
+		<include refid="where" />
+	</select>
+
+	<select id="list" resultType="NewsType">
+		select * from news_type
+	</select>
+
+	<update id="update">
+		update news_type t
+		<set>
+			<if test="Id != null">
+				Id = #{Id},
+			</if>
+			<if test="categories != null">
+				categories = #{categories},
+			</if>
+			<if test="sort != null">
+				sort = #{sort},
+			</if>
+
+		</set>
+
+		where t.id = #{id}
+	</update>
+
+</mapper>
