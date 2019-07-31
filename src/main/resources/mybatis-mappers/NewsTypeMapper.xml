@@ -24,14 +24,14 @@
 	</select>
 
 	<select id="list" resultType="NewsType">
-		select * from news_type
+		select * from news_type ORDER BY SORT DESC
 	</select>
 
 	<update id="update">
 		update news_type t
-		<set>阿水打
-			<if test="Id != null">
-				Id = #{Id},
+		<set>
+			<if test="id != null">
+				id = #{id},
 			</if>
 			<if test="categories != null">
 				categories = #{categories},
