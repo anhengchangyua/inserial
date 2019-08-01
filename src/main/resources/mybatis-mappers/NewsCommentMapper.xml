@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhy.cloud.dao.NewsCommentDao">
+
+	<sql id="where">
+		<where>
+			<if test="params.id != null and params.id != ''">
+				and id = #{params.id}
+			</if>
+			<if test="params.news_id != null and params.news_id != ''">
+				and news_id = #{params.newsId} 
+			</if>
+			<if test="params.is_check != null and params.is_check != ''">
+				and is_check = #{params.isCheck} 
+			</if>
+			<if test="params.content != null and params.content != ''">
+				and content = #{params.content} 
+			</if>
+			<if test="params.userId != null and params.userId != ''">
+				and userId = #{params.userId} 
+			</if>
+			<if test="params.like_number != null and params.like_number != ''">
+				and like_number = #{params.likeNumber} 
+			</if>
+		
+		</where>
+	</sql>
+
+	<select id="count" resultType="int">
+		select count(1) from news_comment t
+		<include refid="where" />
+	</select>
+
+	<select id="list" resultType="NewsComment">
+		select * from news_comment t
+		<include refid="where" />
+		${params.orderBy}
+		limit #{offset}, #{limit}
+	</select>
+
+	<update id="update">
+		update news_comment t
+		<set>
+			<if test="id != null">
+				id = #{id},
+			</if>
+			<if test="news_id != null">
+				news_id = #{newsId}, 
+			</if>
+			<if test="is_check != null">
+				is_check = #{isCheck}, 
+			</if>
+			<if test="content != null">
+				content = #{content}, 
+			</if>
+			<if test="userId != null">
+				userId = #{userId}, 
+			</if>
+			<if test="like_number != null">
+				like_number = #{likeNumber}, 
+			</if>
+
+		</set>
+
+		where t.id = #{id}
+	</update>
+
+</mapper>

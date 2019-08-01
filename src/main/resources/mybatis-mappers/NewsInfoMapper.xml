@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhy.cloud.dao.NewsInfoDao">
+
+	<sql id="where">
+		<where>
+			<if test="params.id != null and params.id != ''">
+				and id = #{params.id}
+			</if>
+			<if test="params.type_id != null and params.type_id != ''">
+				and type_id = #{params.typeid}
+			</if>
+			<if test="params.title != null and params.title != ''">
+				and title = #{params.title} 
+			</if>
+			<if test="params.content != null and params.content != ''">
+				and content = #{params.content} 
+			</if>
+			<if test="params.click_volume != null and params.click_volume != ''">
+				and click_volume = #{params.clickVolume} 
+			</if>
+			<if test="params.display_method != null and params.display_method != ''">
+				and display_method = #{params.displayMethod} 
+			</if>
+			<if test="params.is_top != null and params.is_top != ''">
+				and is_top = #{params.isTop} 
+			</if>
+			<if test="params.is_scroll != null and params.is_scroll != ''">
+				and is_scroll = #{params.isScroll} 
+			</if>
+			<if test="params.is_check != null and params.is_check != ''">
+				and is_check = #{params.isCheck} 
+			</if>
+			<if test="params.release_time != null and params.release_time != ''">
+				and release_time = #{params.releaseTime} 
+			</if>
+			<if test="params.create_time != null and params.create_time != ''">
+				and create_time = #{params.createTime} 
+			</if>
+		
+		</where>
+	</sql>
+
+	<select id="count" resultType="int">
+		select count(1) from news_info t
+		<include refid="where" />
+	</select>
+
+	<select id="list" resultType="NewsInfo">
+		select * from news_info t
+		<include refid="where" />
+		${params.orderBy}
+		limit #{offset}, #{limit}
+	</select>
+
+	<update id="update">
+		update news_info t
+		<set>
+			<if test="id != null">
+				id = #{id},
+			</if>
+			<if test="type_id != null">
+				type_id = #{typeId}, 
+			</if>
+			<if test="title != null">
+				title = #{title}, 
+			</if>
+			<if test="content != null">
+				content = #{content}, 
+			</if>
+			<if test="click_volume != null">
+				click_volume = #{clickVolume}, 
+			</if>
+			<if test="display_method != null">
+				display_method = #{displayMethod}, 
+			</if>
+			<if test="is_top != null">
+				is_top = #{isTop}, 
+			</if>
+			<if test="is_scroll != null">
+				is_scroll = #{isScroll}, 
+			</if>
+			<if test="is_check != null">
+				is_check = #{isCheck}, 
+			</if>
+			<if test="release_time != null">
+				release_time = #{releaseTime}, 
+			</if>
+			<if test="create_time != null">
+				create_time = #{createTime}, 
+			</if>
+
+		</set>
+
+		where t.id = #{id}
+	</update>
+
+</mapper>

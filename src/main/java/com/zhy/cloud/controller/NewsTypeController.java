@@ -42,11 +42,9 @@ public class NewsTypeController {
     @PutMapping
     @ApiOperation(value = "修改")
     public void update(@RequestBody NewsType newsType) throws IllegalPropertiesException {
-
         if (newsTypeDao.update(newsType) < 0) {
             throw new IllegalPropertiesException("更新失败");
         }
-
     }
 
     @GetMapping
