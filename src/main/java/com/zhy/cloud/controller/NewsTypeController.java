@@ -3,8 +3,6 @@ package com.zhy.cloud.controller;
 import java.util.List;
 
 import com.zhy.cloud.dao.NewsTypeDao;
-import com.zhy.cloud.dto.ResponseInfo;
-import com.zhy.cloud.exception.IllegalPropertiesException;
 import com.zhy.cloud.model.NewsType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -41,10 +39,8 @@ public class NewsTypeController {
 
     @PutMapping
     @ApiOperation(value = "修改")
-    public void update(@RequestBody NewsType newsType) throws IllegalPropertiesException {
-        if (newsTypeDao.update(newsType) < 0) {
-            throw new IllegalPropertiesException("更新失败");
-        }
+    public void update(@RequestBody NewsType newsType) {
+        newsTypeDao.update(newsType);
     }
 
     @GetMapping

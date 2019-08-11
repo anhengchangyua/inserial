@@ -1,15 +1,15 @@
 package com.zhy.cloud.config;
 
 import com.zhy.cloud.dto.LoginUser;
-import com.zhy.cloud.dto.ResponseInfo;
 import com.zhy.cloud.dto.Token;
 import com.zhy.cloud.filter.TokenFilter;
 import com.zhy.cloud.service.TokenService;
+import com.zhy.cloud.utils.BaseResp;
 import com.zhy.cloud.utils.ResponseUtil;
+import com.zhy.cloud.utils.ResultStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpStatus;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -25,98 +25,95 @@ import java.io.IOException;
 
 /**
  * spring security处理器
- *
  */
 @Configuration
 public class SecurityHandlerConfig {
 
-	@Autowired
-	private TokenService tokenService;
+    @Autowired
+    private TokenService tokenService;
 
-	/**
-	 * 登陆成功，返回Token
-	 * 
-	 * @return
-	 */
-	@Bean
-	public AuthenticationSuccessHandler loginSuccessHandler() {
-		return new AuthenticationSuccessHandler() {
+    /**
+     * 登陆成功，返回Token
+     *
+     * @return
+     */
+    @Bean
+    public AuthenticationSuccessHandler loginSuccessHandler() {
+        return new AuthenticationSuccessHandler() {
 
-			@Override
-			public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+            @Override
+            public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
                                                 Authentication authentication) throws IOException, ServletException {
-				LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+                LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+                Token token = tokenService.saveToken(loginUser);
+                BaseResp info = new BaseResp(ResultStatus.getCode("SUCCESS"), "登录成功", token);
+                ResponseUtil.responseJson(response, info);
+            }
+        };
+    }
 
-				Token token = tokenService.saveToken(loginUser);
-				ResponseUtil.responseJson(response, HttpStatus.OK.value(), token);
-			}
-		};
-	}
+    /**
+     * 登陆失败
+     *
+     * @return
+     */
+    @Bean
+    public AuthenticationFailureHandler loginFailureHandler() {
+        return new AuthenticationFailureHandler() {
 
-	/**
-	 * 登陆失败
-	 * 
-	 * @return
-	 */
-	@Bean
-	public AuthenticationFailureHandler loginFailureHandler() {
-		return new AuthenticationFailureHandler() {
-
-			@Override
-			public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
+            @Override
+            public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response,
                                                 AuthenticationException exception) throws IOException, ServletException {
-				String msg = null;
-				if (exception instanceof BadCredentialsException) {
-					msg = "密码错误";
-				} else {
-					msg = exception.getMessage();
-				}
-				ResponseInfo info = new ResponseInfo(HttpStatus.UNAUTHORIZED.value() + "", msg);
-				ResponseUtil.responseJson(response, HttpStatus.UNAUTHORIZED.value(), info);
-			}
-		};
+                String msg = null;
+                if (exception instanceof BadCredentialsException) {
+                    msg = "密码错误";
+                } else {
+                    msg = exception.getMessage();
+                }
+                BaseResp info = new BaseResp(ResultStatus.getCode("FAIL"), msg);
+                ResponseUtil.responseJson(response, info);
+            }
+        };
 
-	}
+    }
 
-	/**
-	 * 未登录，返回401
-	 * 
-	 * @return
-	 */
-	@Bean
-	public AuthenticationEntryPoint authenticationEntryPoint() {
-		return new AuthenticationEntryPoint() {
+    /**
+     * 未登录，返回401
+     *
+     * @return
+     */
+    @Bean
+    public AuthenticationEntryPoint authenticationEntryPoint() {
+        return new AuthenticationEntryPoint() {
 
-			@Override
-			public void commence(HttpServletRequest request, HttpServletResponse response,
+            @Override
+            public void commence(HttpServletRequest request, HttpServletResponse response,
                                  AuthenticationException authException) throws IOException, ServletException {
-				ResponseInfo info = new ResponseInfo(HttpStatus.UNAUTHORIZED.value() + "", "请先登录");
-				ResponseUtil.responseJson(response, HttpStatus.UNAUTHORIZED.value(), info);
-			}
-		};
-	}
+                BaseResp info = new BaseResp(ResultStatus.http_status_unauthorized);
+                ResponseUtil.responseJson(response, info);
+            }
+        };
+    }
 
-	/**
-	 * 退出处理
-	 * 
-	 * @return
-	 */
-	@Bean
-	public LogoutSuccessHandler logoutSussHandler() {
-		return new LogoutSuccessHandler() {
+    /**
+     * 退出处理
+     *
+     * @return
+     */
+    @Bean
+    public LogoutSuccessHandler logoutSussHandler() {
+        return new LogoutSuccessHandler() {
 
-			@Override
-			public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
+            @Override
+            public void onLogoutSuccess(HttpServletRequest request, HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
-				ResponseInfo info = new ResponseInfo(HttpStatus.OK.value() + "", "退出成功");
+                BaseResp info = new BaseResp(ResultStatus.getCode("SUCCESS"), "退出成功", "");
+                String token = TokenFilter.getToken(request);
+                tokenService.deleteToken(token);
+                ResponseUtil.responseJson(response, info);
+            }
+        };
 
-				String token = TokenFilter.getToken(request);
-				tokenService.deleteToken(token);
-
-				ResponseUtil.responseJson(response, HttpStatus.OK.value(), info);
-			}
-		};
-
-	}
+    }
 
 }
