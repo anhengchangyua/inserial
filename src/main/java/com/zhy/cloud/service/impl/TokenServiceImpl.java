@@ -5,6 +5,7 @@ import com.zhy.cloud.dto.LoginUser;
 import com.zhy.cloud.dto.Token;
 import com.zhy.cloud.service.SysLogService;
 import com.zhy.cloud.service.TokenService;
+import com.zhy.cloud.utils.BaseResp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -33,13 +34,18 @@ public class TokenServiceImpl implements TokenService {
 	private SysLogService logService;
 
 	@Override
+	public BaseResp userLogin(LoginUser loginAppUser) {
+		return null;
+	}
+
+	@Override
 	public Token saveToken(LoginUser loginUser) {
 		String token = UUID.randomUUID().toString();
 
 		loginUser.setToken(token);
 		cacheLoginUser(loginUser);
 		// 登陆日志
-		logService.save(loginUser.getId(), "登陆", true, null);
+		logService.save(loginUser.getUsername(), "登陆", true, null);
 
 		return new Token(token, loginUser.getLoginTime());
 	}
@@ -71,7 +77,7 @@ public class TokenServiceImpl implements TokenService {
 		if (loginUser != null) {
 			redisTemplate.delete(key);
 			// 退出日志
-			logService.save(loginUser.getId(), "退出", true, null);
+			logService.save(loginUser.getUsername(), "退出", true, null);
 
 			return true;
 		}

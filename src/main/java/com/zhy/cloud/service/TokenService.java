@@ -2,6 +2,7 @@ package com.zhy.cloud.service;
 
 import com.zhy.cloud.dto.LoginUser;
 import com.zhy.cloud.dto.Token;
+import com.zhy.cloud.utils.BaseResp;
 
 /**
  * Token管理器<br>
@@ -9,17 +10,18 @@ import com.zhy.cloud.dto.Token;
  * 具体可看实现类<br>
  * 默认基于redis，实现类为 com.boot.security.server.service.impl.TokenServiceJWTImpl<br>
  * 如要换成数据库存储，将TokenServiceImpl类上的注解@Primary挪到com.boot.security.server.service.impl.TokenServiceDbImpl
- * 
- *
  */
 public interface TokenService {
 
-	Token saveToken(LoginUser loginUser);
 
-	void refresh(LoginUser loginUser);
+    BaseResp userLogin(LoginUser loginAppUser);
 
-	LoginUser getLoginUser(String token);
+    Token saveToken(LoginUser loginUser);
 
-	boolean deleteToken(String token);
+    void refresh(LoginUser loginUser);
+
+    LoginUser getLoginUser(String token);
+
+    boolean deleteToken(String token);
 
 }

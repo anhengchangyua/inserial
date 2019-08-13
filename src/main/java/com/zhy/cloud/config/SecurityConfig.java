@@ -52,13 +52,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 		http.authorizeRequests()
 				.antMatchers("/", "/*.html", "/favicon.ico", "/css/**", "/js/**", "/fonts/**", "/layui/**", "/img/**",
-						"/v2/api-docs/**", "/swagger-resources/**", "/webjars/**", "/pages/**", "/druid/**",
+						"/v2/api-docs/**", "/swagger-resources/**", "/webjars/**", "/pages/**", "/druid/**","/users/login","/users/loginPre",
 						"/statics/**")
 				.permitAll().anyRequest().authenticated();
-		http.formLogin().loginProcessingUrl("/login")
-				.successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler).and()
-				.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
-		http.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
+//		http.formLogin().loginProcessingUrl("/login")
+//				.successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler).and()
+//				.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint);
+//		http.logout().logoutUrl("/logout").logoutSuccessHandler(logoutSuccessHandler);
 		// 解决不允许显示在iframe的问题
 		http.headers().frameOptions().disable();
 		http.headers().cacheControl();

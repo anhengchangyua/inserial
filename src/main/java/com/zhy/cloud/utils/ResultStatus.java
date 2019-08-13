@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author zhy
  */
+
 public enum ResultStatus {
 
     // -1为通用失败（根据ApiResult.java中的构造方法注释而来）
@@ -96,6 +97,14 @@ public enum ResultStatus {
     ResultStatus(int code, String msg) {
         this.code = code;
         this.msg = msg;
+    }
+
+    public String getMsg() {
+        return msg;
+    }
+
+    public int getCode() {
+        return code;
     }
 
     public static int getCode(String define) {

@@ -45,14 +45,14 @@ public class SysLogServiceImpl implements SysLogService {
 
     @Async
     @Override
-    public void save(Long userId, String module, Boolean flag, String remark) {
+    public void save(String userId, String module, Boolean flag, String remark) {
         SysLogs sysLogs = new SysLogs();
         sysLogs.setFlag(flag);
         sysLogs.setModule(module);
         sysLogs.setRemark(remark);
 
         SysUser user = new SysUser();
-        user.setId(userId);
+        user.setUsername(userId);
         sysLogs.setUser(user);
 
         sysLogsDao.save(sysLogs);

@@ -7,6 +7,7 @@ import com.zhy.cloud.dto.Token;
 import com.zhy.cloud.model.TokenModel;
 import com.zhy.cloud.service.SysLogService;
 import com.zhy.cloud.service.TokenService;
+import com.zhy.cloud.utils.BaseResp;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -56,6 +57,11 @@ public class TokenServiceDbImpl implements TokenService {
 	private static final String LOGIN_USER_KEY = "LOGIN_USER_KEY";
 
 	@Override
+	public BaseResp userLogin(LoginUser loginAppUser) {
+		return null;
+	}
+
+	@Override
 	public Token saveToken(LoginUser loginUser) {
 		loginUser.setToken(UUID.randomUUID().toString());
 		loginUser.setLoginTime(System.currentTimeMillis());
@@ -70,7 +76,7 @@ public class TokenServiceDbImpl implements TokenService {
 
 		tokenDao.save(model);
 		// 登陆日志
-		logService.save(loginUser.getId(), "登陆", true, null);
+		logService.save(loginUser.getUsername(), "登陆", true, null);
 
 		String jwtToken = createJWTToken(loginUser);
 
@@ -125,7 +131,7 @@ public class TokenServiceDbImpl implements TokenService {
 			LoginUser loginUser = toLoginUser(model);
 			if (loginUser != null) {
 				tokenDao.delete(uuid);
-				logService.save(loginUser.getId(), "退出", true, null);
+				logService.save(loginUser.getUsername(), "退出", true, null);
 
 				return true;
 			}
