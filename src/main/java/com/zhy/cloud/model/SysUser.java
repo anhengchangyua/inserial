@@ -1,8 +1,11 @@
 package com.zhy.cloud.model;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.util.Date;
+
 
 public class SysUser extends BaseEntity<Long> {
 

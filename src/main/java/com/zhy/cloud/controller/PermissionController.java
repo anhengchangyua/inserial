@@ -104,7 +104,7 @@ public class PermissionController {
 
 	@GetMapping
 	@ApiOperation(value = "菜单列表")
-	@PreAuthorize("hasAuthority('sys:menu:query')")
+//	@PreAuthorize("hasAuthority('sys:menu:query')")
 	public List<Permission> permissionsList() {
 		List<Permission> permissionsAll = permissionDao.listAll();
 
@@ -116,7 +116,7 @@ public class PermissionController {
 
 	@GetMapping("/all")
 	@ApiOperation(value = "所有菜单")
-	@PreAuthorize("hasAuthority('sys:menu:query')")
+//	@PreAuthorize("hasAuthority('sys:menu:query')")
 	public JSONArray permissionsAll() {
 		List<Permission> permissionsAll = permissionDao.listAll();
 		JSONArray array = new JSONArray();
@@ -167,7 +167,7 @@ public class PermissionController {
 	@LogAnnotation
 	@PostMapping
 	@ApiOperation(value = "保存菜单")
-	@PreAuthorize("hasAuthority('sys:menu:add')")
+//	@PreAuthorize("hasAuthority('sys:menu:add')")
 	public void save(@RequestBody Permission permission) {
 		permissionDao.save(permission);
 	}

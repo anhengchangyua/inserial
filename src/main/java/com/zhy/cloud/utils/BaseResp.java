@@ -29,10 +29,6 @@ public class BaseResp<T> {
         return code;
     }
 
-    public void setCode(int code) {
-        this.code = code;
-    }
-
     public String getMessage() {
         return message;
     }
@@ -45,8 +41,14 @@ public class BaseResp<T> {
         return data;
     }
 
-    public void setData(T data) {
+    public BaseResp<T> setData(T data) {
         this.data = data;
+        return this;
+    }
+
+    public BaseResp<T> setCode(int code) {
+        this.code = code;
+        return this;
     }
 
 

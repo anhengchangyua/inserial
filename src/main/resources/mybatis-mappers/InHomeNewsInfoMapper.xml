@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zhy.cloud.dao.InHomeNewsInfoDao">
+
+
+    <sql id="selectBaseSql">
+        SELECT a.* FROM in_home_newsinfo AS a
+    </sql>
+
+
+    <select id="selectAllProjects" resultType="com.zhy.cloud.model.InHomeNewsInfo">
+        <include refid="selectBaseSql"/>
+    </select>
+
+</mapper>

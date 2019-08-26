@@ -64,9 +64,7 @@ public class TokenServiceJWTImpl implements TokenService {
         BaseResp result = new BaseResp();
         Map<String, Object> map = new HashMap<>();
         try {
-            String username = loginAppUser.getUsername().trim();
             Token token = saveToken(loginAppUser);
-
             result.setMessage("登录成功");
             map.put("jwt", token);
             //登录成功后返回当前登录用户信息

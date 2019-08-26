@@ -12,7 +12,7 @@ import java.util.Map;
 @Mapper
 public interface SysLogsDao {
 
-	@Insert("insert into sys_logs(userId, module, flag, remark, createTime) values(#{user.id}, #{module}, #{flag}, #{remark}, now())")
+	@Insert("insert into sys_logs(userName, module, flag, remark, createTime) values(#{user.username}, #{module}, #{flag}, #{remark}, now())")
 	int save(SysLogs sysLogs);
 
 	int count(@Param("params") Map<String, Object> params);

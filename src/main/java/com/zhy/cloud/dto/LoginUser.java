@@ -9,8 +9,10 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.util.StringUtils;
 
+import java.io.Console;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class LoginUser extends SysUser implements UserDetails {
@@ -47,8 +49,11 @@ public class LoginUser extends SysUser implements UserDetails {
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return permissions.parallelStream().filter(p -> !StringUtils.isEmpty(p.getPermission()))
-                .map(p -> new SimpleGrantedAuthority(p.getPermission())).collect(Collectors.toSet());
+        if (permissions != null) {
+            return permissions.parallelStream().filter(p -> !StringUtils.isEmpty(p.getPermission()))
+                    .map(p -> new SimpleGrantedAuthority(p.getPermission())).collect(Collectors.toSet());
+        }
+        return null;
     }
 
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
