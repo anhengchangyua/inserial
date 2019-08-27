@@ -1,13 +1,11 @@
 package com.zhy.cloud.service.impl;
 
-import com.zhy.cloud.dto.JWT;
 import com.zhy.cloud.dto.LoginUser;
 import com.zhy.cloud.dto.Token;
 import com.zhy.cloud.exception.BusinessException;
 import com.zhy.cloud.service.SysLogService;
 import com.zhy.cloud.service.TokenService;
 import com.zhy.cloud.utils.BaseResp;
-import com.zhy.cloud.utils.ResultStatus;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -15,7 +13,6 @@ import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
@@ -58,25 +55,24 @@ public class TokenServiceJWTImpl implements TokenService {
     private static Key KEY = null;
     private static final String LOGIN_USER_KEY = "LOGIN_USER_KEY";
 
-
-    @Override
-    public BaseResp userLogin(LoginUser loginAppUser) {
-        BaseResp result = new BaseResp();
-        Map<String, Object> map = new HashMap<>();
-        try {
-            Token token = saveToken(loginAppUser);
-            result.setMessage("登录成功");
-            map.put("jwt", token);
-            //登录成功后返回当前登录用户信息
-            map.put("userInfo", loginAppUser);
-            result.setData(map);
-        } catch (BusinessException e) {
-            result.setCode(-1);
-            result.setMessage(e.getMessage());
-            e.printStackTrace();
-        }
-        return result;
-    }
+//    @Override
+//    public BaseResp userLogin(LoginUser loginAppUser) {
+//        BaseResp result = new BaseResp();
+//        Map<String, Object> map = new HashMap<>();
+//        try {
+//            Token token = saveToken(loginAppUser);
+//            result.setMessage("登录成功");
+//            map.put("jwt", token);
+//            //登录成功后返回当前登录用户信息
+//            map.put("userInfo", loginAppUser);
+//            result.setData(map);
+//        } catch (BusinessException e) {
+//            result.setCode(-1);
+//            result.setMessage(e.getMessage());
+//            e.printStackTrace();
+//        }
+//        return result;
+//    }
 
     @Override
     public Token saveToken(LoginUser loginUser) {
@@ -97,11 +93,8 @@ public class TokenServiceJWTImpl implements TokenService {
     private String createJWTToken(LoginUser loginUser) {
         Map<String, Object> claims = new HashMap<>();
         claims.put(LOGIN_USER_KEY, loginUser.getToken());// 放入一个随机字符串，通过该串可找到登陆用户
-
-        String jwtToken = Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS256, getKeyInstance())
+        return Jwts.builder().setClaims(claims).signWith(SignatureAlgorithm.HS256, getKeyInstance())
                 .compact();
-
-        return jwtToken;
     }
 
 
@@ -168,7 +161,6 @@ public class TokenServiceJWTImpl implements TokenService {
         if ("null".equals(jwtToken) || StringUtils.isBlank(jwtToken)) {
             return null;
         }
-
         try {
             Map<String, Object> jwtClaims = Jwts.parser().setSigningKey(getKeyInstance()).parseClaimsJws(jwtToken).getBody();
             return MapUtils.getString(jwtClaims, LOGIN_USER_KEY);

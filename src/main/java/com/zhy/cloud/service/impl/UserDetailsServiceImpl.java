@@ -5,6 +5,7 @@ import com.zhy.cloud.dto.LoginUser;
 import com.zhy.cloud.model.Permission;
 import com.zhy.cloud.model.SysUser;
 import com.zhy.cloud.service.UserService;
+import com.zhy.cloud.utils.UserUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationCredentialsNotFoundException;
@@ -46,6 +47,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         BeanUtils.copyProperties(sysUser, loginUser);
 
         List<Permission> permissions = permissionDao.listByUserId(sysUser.getId());
+
         loginUser.setPermissions(permissions);
 
         return loginUser;

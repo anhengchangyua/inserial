@@ -2,11 +2,15 @@ package com.zhy.cloud.config;
 
 import com.zhy.cloud.dto.LoginUser;
 import com.zhy.cloud.dto.Token;
+import com.zhy.cloud.dto.UserDto;
+import com.zhy.cloud.dvo.UserDvo;
 import com.zhy.cloud.filter.TokenFilter;
+import com.zhy.cloud.model.Permission;
 import com.zhy.cloud.service.TokenService;
 import com.zhy.cloud.utils.BaseResp;
 import com.zhy.cloud.utils.ResponseUtil;
 import com.zhy.cloud.utils.ResultStatus;
+import com.zhy.cloud.utils.UserUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,6 +26,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 /**
  * spring security处理器
@@ -46,8 +53,27 @@ public class SecurityHandlerConfig {
                                                 Authentication authentication) throws IOException, ServletException {
                 LoginUser loginUser = (LoginUser) authentication.getPrincipal();
                 Token token = tokenService.saveToken(loginUser);
-                BaseResp info = new BaseResp(ResultStatus.getCode("SUCCESS"), "登录成功", token);
-                ResponseUtil.responseJson(response, info);
+                List<Permission> currentPermissionsList = UserUtil.getCurrentPermissionsList(loginUser.getPermissions());
+
+                UserDvo userDvo = new UserDvo();
+                userDvo.setNickname(loginUser.getNickname());
+                userDvo.setBirthday(loginUser.getBirthday());
+                userDvo.setEmail(loginUser.getEmail());
+                userDvo.setHeadImgUrl(loginUser.getHeadImgUrl());
+                userDvo.setIntro(loginUser.getIntro());
+                userDvo.setPhone(loginUser.getPhone());
+                userDvo.setSex(loginUser.getSex());
+                userDvo.setUsername(loginUser.getUsername());
+
+                Map<String, Object> map = new HashMap<>();
+                map.put("code", ResultStatus.getCode("SUCCESS"));
+                map.put("message", "登录成功");
+                map.put("menus", currentPermissionsList);
+                map.put("token", token.getToken());
+                map.put("userInfo", userDvo);
+
+//                BaseResp info = new BaseResp(ResultStatus.getCode("SUCCESS"), "登录成功", token);
+                ResponseUtil.responseJson(response, map);
             }
         };
     }

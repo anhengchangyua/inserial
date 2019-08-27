@@ -23,6 +23,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.StringWriter;
@@ -53,59 +54,6 @@ public class UserController {
         this.redisTemplate = redisTemplate;
     }
 
-
-    @GetMapping("/loginPre")
-    public BaseResp<Object> getPubKey(String username) {
-            BaseResp<Object> result = new BaseResp<>();
-        Map<String, String> keys;
-        try {
-            keys = RSAUtils.createKeys(1024);
-            String aPublic = keys.get("publicKey");
-            String aPrivate = keys.get("privateKey");
-            redisTemplate.opsForValue().set(username, aPrivate, 60, TimeUnit.SECONDS);
-            RSAPublicKey publicKey = RSAUtils.getPublicKey(aPublic);
-            StringWriter writer = new StringWriter();
-            PemWriter pemWriter = new PemWriter(writer);
-            pemWriter.writeObject(new PemObject("PUBLIC KEY", publicKey.getEncoded()));
-            pemWriter.flush();
-            pemWriter.close();
-            String s = writer.toString();
-            result.setData(s);
-        } catch (Exception e) {
-            result.setCode(ResultStatus.getCode("FAIL"));
-            result.setMessage("获取秘钥失败!");
-            e.printStackTrace();
-        }
-        return result;
-    }
-
-
-    @PostMapping("/login")
-    public BaseResp login(@RequestBody LoginUser loginAppUser) {
-        BaseResp result = new BaseResp();
-        String username = loginAppUser.getUsername();
-        String privateKey = (String) redisTemplate.opsForValue().get(username);
-        redisTemplate.delete(username);
-        if (StringUtils.isBlank(privateKey)) {
-            result.setCode(ResultStatus.getCode("FAIL"));
-            result.setMessage("未获取到该用户名对应秘钥!");
-            return result;
-        }
-        String s = loginAppUser.getPassword().replaceAll("-", "+");
-        String s1 = s.replaceAll("_", "/");
-        RSAPrivateKey privateKey1;
-        try {
-            privateKey1 = RSAUtils.getPrivateKey(privateKey);
-            String password = RSAUtils.privateDecrypt(s1, privateKey1);
-            loginAppUser.setPassword(password);
-            result = tokenService.userLogin(loginAppUser);
-        } catch (Exception e) {
-            e.printStackTrace();
-            result.setCode(ResultStatus.getCode("FAIL"));
-            result.setMessage("密钥解析异常,请联系管理员!");
-        }
-        return result;
-    }
 
 
     @LogAnnotation

@@ -28,7 +28,6 @@ public class NewsInfoController {
     @ApiOperation(value = "保存")
     public NewsInfo save(@RequestBody NewsInfo newsInfo) {
         newsInfoDao.save(newsInfo);
-
         return newsInfo;
     }
 

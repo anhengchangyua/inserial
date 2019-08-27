@@ -3,6 +3,7 @@ package com.zhy.cloud.service;
 import com.zhy.cloud.dto.LoginUser;
 import com.zhy.cloud.dto.Token;
 import com.zhy.cloud.utils.BaseResp;
+import org.springframework.security.core.Authentication;
 
 /**
  * Token管理器<br>
@@ -14,7 +15,6 @@ import com.zhy.cloud.utils.BaseResp;
 public interface TokenService {
 
 
-    BaseResp userLogin(LoginUser loginAppUser);
 
     Token saveToken(LoginUser loginUser);
 

@@ -49,11 +49,8 @@ public class LoginUser extends SysUser implements UserDetails {
     @Override
     @JsonIgnore
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        if (permissions != null) {
-            return permissions.parallelStream().filter(p -> !StringUtils.isEmpty(p.getPermission()))
-                    .map(p -> new SimpleGrantedAuthority(p.getPermission())).collect(Collectors.toSet());
-        }
-        return null;
+        return permissions.parallelStream().filter(p -> !StringUtils.isEmpty(p.getPermission()))
+                .map(p -> new SimpleGrantedAuthority(p.getPermission())).collect(Collectors.toSet());
     }
 
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
