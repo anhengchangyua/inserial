@@ -71,8 +71,6 @@ public class SecurityHandlerConfig {
                 map.put("menus", currentPermissionsList);
                 map.put("token", token.getToken());
                 map.put("userInfo", userDvo);
-
-//                BaseResp info = new BaseResp(ResultStatus.getCode("SUCCESS"), "登录成功", token);
                 ResponseUtil.responseJson(response, map);
             }
         };

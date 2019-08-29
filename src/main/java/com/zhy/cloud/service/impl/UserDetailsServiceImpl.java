@@ -19,9 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * spring security登陆处理<br>
- * <p>
- * 密码校验请看文档（02 框架及配置），第三章第4节
+ * spring security登陆处理
  */
 @SuppressWarnings("ALL")
 @Service
@@ -49,7 +47,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         List<Permission> permissions = permissionDao.listByUserId(sysUser.getId());
 
         loginUser.setPermissions(permissions);
-
         return loginUser;
     }
 

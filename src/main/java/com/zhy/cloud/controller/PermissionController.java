@@ -45,7 +45,7 @@ public class PermissionController {
         if (loginUser != null) {
             list = loginUser.getPermissions();
         }
-        List<Permission> currentPermissionsList = UserUtil.getCurrentPermissionsList(list);
+        List<Permission> currentPermissionsList  = UserUtil.getCurrentPermissionsList(list);
         baseResp.setCode(ResultStatus.SUCCESS.getCode());
         baseResp.setData(currentPermissionsList);
 

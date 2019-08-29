@@ -74,7 +74,6 @@ public class UserServiceImpl implements UserService {
     public SysUser updateUser(UserDto userDto) {
         userDao.update(userDto);
         saveUserRoles(userDto.getId(), userDto.getRoleIds());
-
         return userDto;
     }
 
