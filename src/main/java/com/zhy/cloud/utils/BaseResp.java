@@ -1,7 +1,10 @@
 package com.zhy.cloud.utils;
 
 
+import com.zhy.cloud.model.Permission;
+
 import java.util.Date;
+import java.util.List;
 
 /**
  * 基础返回model
@@ -23,6 +26,9 @@ public class BaseResp<T> {
      * 返回数据
      */
     private T data;
+
+    public BaseResp(int code, List<Permission> currentPermissionsList) {
+    }
 
 
     public int getCode() {

@@ -9,6 +9,8 @@ import com.zhy.cloud.dao.PermissionDao;
 import com.zhy.cloud.dto.LoginUser;
 import com.zhy.cloud.model.Permission;
 import com.zhy.cloud.service.PermissionService;
+import com.zhy.cloud.utils.BaseResp;
+import com.zhy.cloud.utils.ResultStatus;
 import com.zhy.cloud.utils.UserUtil;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -23,10 +25,6 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-/**
- * 权限相关接口
- */
-
 @Api(tags = "权限")
 @RestController
 @RequestMapping("/permissions")
@@ -39,22 +37,20 @@ public class PermissionController {
 
     @ApiOperation(value = "当前登录用户拥有的权限")
     @GetMapping("/current")
-    public List<Permission> permissionsCurrent() {
+    public BaseResp permissionsCurrent() {
+
+        BaseResp baseResp = new BaseResp();
         LoginUser loginUser = UserUtil.getLoginUser();
         List<Permission> list = null;
         if (loginUser != null) {
             list = loginUser.getPermissions();
         }
-        return UserUtil.getCurrentPermissionsList(list);
-    }
+        List<Permission> currentPermissionsList = UserUtil.getCurrentPermissionsList(list);
+        baseResp.setCode(ResultStatus.SUCCESS.getCode());
+        baseResp.setData(currentPermissionsList);
 
-//	private void setChild(List<Permission> permissions) {
-//		permissions.parallelStream().forEach(per -> {
-//			List<Permission> child = permissions.stream().filter(p -> p.getParentId().equals(per.getId()))
-//					.collect(Collectors.toList());
-//			per.setChild(child);
-//		});
-//	}
+        return baseResp;
+    }
 
     /**
      * 菜单列表

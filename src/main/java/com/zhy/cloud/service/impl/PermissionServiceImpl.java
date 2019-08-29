@@ -23,7 +23,7 @@ public class PermissionServiceImpl implements PermissionService {
     public void save(Permission permission) {
         permissionDao.save(permission);
 
-        log.debug("新增菜单{}", permission.getName());
+        log.debug("新增菜单{}", permission.getMenuName());
     }
 
     @Override

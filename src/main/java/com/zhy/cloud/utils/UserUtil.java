@@ -36,7 +36,7 @@ public class UserUtil {
         // 2018.06.09 支持多级菜单
         List<Permission> firstLevel = permissions.stream().filter(p -> p.getParentId().equals(0L)).collect(Collectors.toList());
         for (Permission p : firstLevel) {
-            setChild(p, permissions);
+            setChild(p, permissionList);
         }
         return firstLevel;
 
