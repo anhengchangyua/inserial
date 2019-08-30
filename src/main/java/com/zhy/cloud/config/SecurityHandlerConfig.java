@@ -55,15 +55,7 @@ public class SecurityHandlerConfig {
                 Token token = tokenService.saveToken(loginUser);
                 List<Permission> currentPermissionsList = UserUtil.getCurrentPermissionsList(loginUser.getPermissions());
 
-                UserDvo userDvo = new UserDvo();
-                userDvo.setNickname(loginUser.getNickname());
-                userDvo.setBirthday(loginUser.getBirthday());
-                userDvo.setEmail(loginUser.getEmail());
-                userDvo.setHeadImgUrl(loginUser.getHeadImgUrl());
-                userDvo.setIntro(loginUser.getIntro());
-                userDvo.setPhone(loginUser.getPhone());
-                userDvo.setSex(loginUser.getSex());
-                userDvo.setUsername(loginUser.getUsername());
+                UserDvo userDvo = UserUtil.getUserDvo(loginUser);
 
                 Map<String, Object> map = new HashMap<>();
                 map.put("code", ResultStatus.getCode("SUCCESS"));
@@ -75,6 +67,7 @@ public class SecurityHandlerConfig {
             }
         };
     }
+
 
     /**
      * 登陆失败

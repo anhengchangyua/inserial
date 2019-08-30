@@ -2,6 +2,7 @@ package com.zhy.cloud.utils;
 
 
 import com.zhy.cloud.dto.LoginUser;
+import com.zhy.cloud.dvo.UserDvo;
 import com.zhy.cloud.model.Permission;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -20,14 +21,27 @@ public class UserUtil {
             if (authentication instanceof AnonymousAuthenticationToken) {
                 return null;
             }
-
             if (authentication instanceof UsernamePasswordAuthenticationToken) {
                 return (LoginUser) authentication.getPrincipal();
             }
         }
-
         return null;
     }
+
+    //convert userdao to dto
+    public static UserDvo getUserDvo(LoginUser loginUser) {
+        UserDvo userDvo = new UserDvo();
+        userDvo.setNickname(loginUser.getNickname());
+        userDvo.setBirthday(loginUser.getBirthday());
+        userDvo.setEmail(loginUser.getEmail());
+        userDvo.setHeadImgUrl(loginUser.getHeadImgUrl());
+        userDvo.setIntro(loginUser.getIntro());
+        userDvo.setPhone(loginUser.getPhone());
+        userDvo.setSex(loginUser.getSex());
+        userDvo.setUsername(loginUser.getUsername());
+        return userDvo;
+    }
+
 
     public static List<Permission> getCurrentPermissionsList(List<Permission> permissionList) {
         //父级菜单

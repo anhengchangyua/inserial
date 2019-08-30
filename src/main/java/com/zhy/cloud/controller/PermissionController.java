@@ -20,9 +20,7 @@ import org.springframework.util.CollectionUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Api(tags = "权限")
@@ -45,9 +43,12 @@ public class PermissionController {
         if (loginUser != null) {
             list = loginUser.getPermissions();
         }
+        HashMap<String, Object> map = new HashMap();
         List<Permission> currentPermissionsList  = UserUtil.getCurrentPermissionsList(list);
+        map.put("menus",currentPermissionsList);
+        map.put("userInfo",UserUtil.getUserDvo(loginUser));
         baseResp.setCode(ResultStatus.SUCCESS.getCode());
-        baseResp.setData(currentPermissionsList);
+        baseResp.setData(map);
 
         return baseResp;
     }
