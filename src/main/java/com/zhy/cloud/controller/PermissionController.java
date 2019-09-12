@@ -28,22 +28,26 @@ import java.util.stream.Collectors;
 @RequestMapping("/permissions")
 public class PermissionController {
 
+    private final PermissionDao permissionDao;
+    private final PermissionService permissionService;
+
     @Autowired
-    private PermissionDao permissionDao;
-    @Autowired
-    private PermissionService permissionService;
+    public PermissionController(PermissionDao permissionDao, PermissionService permissionService) {
+        this.permissionDao = permissionDao;
+        this.permissionService = permissionService;
+    }
 
     @ApiOperation(value = "当前登录用户拥有的权限")
     @GetMapping("/current")
-    public BaseResp permissionsCurrent() {
+    public BaseResp<HashMap<String, Object>> permissionsCurrent() {
 
-        BaseResp baseResp = new BaseResp();
+        BaseResp<HashMap<String, Object>> baseResp = new BaseResp<HashMap<String, Object>>();
         LoginUser loginUser = UserUtil.getLoginUser();
         List<Permission> list = null;
         if (loginUser != null) {
             list = loginUser.getPermissions();
         }
-        HashMap<String, Object> map = new HashMap();
+        HashMap<String, Object> map = new HashMap<>();
         List<Permission> currentPermissionsList  = UserUtil.getCurrentPermissionsList(list);
         map.put("menus",currentPermissionsList);
         map.put("userInfo",UserUtil.getUserDvo(loginUser));
@@ -98,9 +102,8 @@ public class PermissionController {
     @ApiOperation(value = "一级菜单")
     @PreAuthorize("hasAuthority('sys:menu:query')")
     public List<Permission> parentMenu() {
-        List<Permission> parents = permissionDao.listParents();
 
-        return parents;
+        return permissionDao.listParents();
     }
 
     /**

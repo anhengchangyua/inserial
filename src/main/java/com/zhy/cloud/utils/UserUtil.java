@@ -26,7 +26,7 @@ public class UserUtil {
             }
         }
         return null;
-    }
+}
 
     //convert userdao to dto
     public static UserDvo getUserDvo(LoginUser loginUser) {
