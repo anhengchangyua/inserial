@@ -4,6 +4,8 @@ import java.util.List;
 
 import com.zhy.cloud.dao.NewsTypeDao;
 import com.zhy.cloud.model.NewsType;
+import com.zhy.cloud.utils.BaseResp;
+import com.zhy.cloud.utils.ResultStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -45,9 +47,12 @@ public class NewsTypeController {
 
     @GetMapping
     @ApiOperation(value = "列表")
-    public List<NewsType> list() {
+    public BaseResp list() {
         List<NewsType> list = newsTypeDao.list();
-        return list;
+        BaseResp baseResp = new BaseResp();
+        baseResp.setCode(ResultStatus.getCode("SUCCESS"));
+        baseResp.setData(list);
+        return baseResp;
     }
 
     @DeleteMapping("/{id}")
