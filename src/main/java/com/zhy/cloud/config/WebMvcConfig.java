@@ -1,6 +1,5 @@
 package com.zhy.cloud.config;
 
-import com.zhy.cloud.filter.CorsFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,15 +25,12 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins("*")
                 .allowCredentials(true)
-                .allowedHeaders("Origin, X-Requested-With, Content-Type, Accept,token")
-                .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
+                .allowedHeaders("*")
+                .allowedMethods("*")
                 .maxAge(3600);
     }
 
-    @Bean
-    public CorsFilter corsFilter() throws Exception {
-        return new CorsFilter();
-    }
+
 
     /**
      * 上传文件根路径

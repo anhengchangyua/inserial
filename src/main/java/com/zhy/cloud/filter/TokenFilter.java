@@ -40,6 +40,13 @@ public class TokenFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
+
+//        response.setHeader("Access-Control-Allow-Origin", "*");//* or origin as u prefer
+//        response.setHeader("Access-Control-Allow-Credentials", "true");
+//        response.setHeader("Access-Control-Allow-Methods", "PUT, POST, GET, OPTIONS, DELETE");
+//        response.setHeader("Access-Control-Max-Age", "3600");
+//        response.setHeader("Access-Control-Allow-Headers", "content-type, token");
+
         String token = getToken(request);
         if (StringUtils.isNotBlank(token)) {
             LoginUser loginUser = tokenService.getLoginUser(token);
@@ -50,10 +57,6 @@ public class TokenFilter extends OncePerRequestFilter {
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
         }
-        if (request.getMethod().equals(RequestMethod.OPTIONS.name())) {
-            filterChain.doFilter(request, response);
-        }
-
         filterChain.doFilter(request, response);
     }
 
