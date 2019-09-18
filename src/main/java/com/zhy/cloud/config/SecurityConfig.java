@@ -3,6 +3,7 @@ package com.zhy.cloud.config;
 import com.zhy.cloud.filter.TokenFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -44,12 +45,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
-
         // 基于token，所以不需要session
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
-                .antMatchers("/", "/users/login", "/news/**")
+                .antMatchers( "/", "/users/login", "/news/**")
                 .permitAll().anyRequest().authenticated();
 		http.formLogin().loginProcessingUrl("/users/login")
 				.successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler).and()
@@ -58,6 +58,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 解决不允许显示在iframe的问题
         http.headers().frameOptions().disable();
         http.headers().cacheControl();
+
 
         http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
     }

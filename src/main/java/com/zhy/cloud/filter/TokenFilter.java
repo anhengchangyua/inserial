@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -23,7 +24,7 @@ import java.util.Collection;
 /**
  * Token过滤器
  */
-@SuppressWarnings("ALL")
+
 @Component
 @Service
 public class TokenFilter extends OncePerRequestFilter {
@@ -48,6 +49,9 @@ public class TokenFilter extends OncePerRequestFilter {
                         null, loginUser.getAuthorities());
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
+        }
+        if (request.getMethod().equals(RequestMethod.OPTIONS.name())) {
+            filterChain.doFilter(request, response);
         }
 
         filterChain.doFilter(request, response);
@@ -85,6 +89,7 @@ public class TokenFilter extends OncePerRequestFilter {
         }
 
         return token;
+
     }
 
 }

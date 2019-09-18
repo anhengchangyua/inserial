@@ -1,5 +1,6 @@
 package com.zhy.cloud.config;
 
+import com.zhy.cloud.filter.CorsFilter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -18,29 +19,22 @@ public class WebMvcConfig implements WebMvcConfigurer {
 
     /**
      * 跨域支持
-     *
-     * @return
      */
-    /**
-     * 跨域支持
-     */
-    @Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurer() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/**")
-                        .allowedMethods("*")
-                        .allowedHeaders("*")
-                        .allowedOrigins("*")
-                        .allowCredentials(true)
-                        .maxAge(18000L);
-            }
-        };
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        //设置允许跨域的路径
+        registry.addMapping("/**")
+                .allowedOrigins("*")
+                .allowCredentials(true)
+                .allowedHeaders("Origin, X-Requested-With, Content-Type, Accept,token")
+                .allowedMethods("GET", "POST", "DELETE", "PUT", "OPTIONS")
+                .maxAge(3600);
     }
 
-
-
+    @Bean
+    public CorsFilter corsFilter() throws Exception {
+        return new CorsFilter();
+    }
 
     /**
      * 上传文件根路径
