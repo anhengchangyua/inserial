@@ -4,12 +4,12 @@
 
 
     <sql id="selectBaseSql">
-        SELECT a.* FROM in_home_newsinfo AS a
+        SELECT a.* FROM in_home_newsinfo AS a ORDER BY id DESC
     </sql>
 
-
-    <select id="selectAllProjects" resultType="com.zhy.cloud.model.InHomeNewsInfo">
+    <select id="selectAllNews" resultType="com.zhy.cloud.model.InHomeNewsInfo">
         <include refid="selectBaseSql"/>
+        <include refid="queryConditions"/>
     </select>
 
 </mapper>

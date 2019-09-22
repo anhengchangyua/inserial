@@ -10,5 +10,5 @@ public interface InHomeNewsInfoService  {
      * @param inHomeNewsInfo
      * @return
      */
-    List<InHomeNewsInfo> selectAllProjects(InHomeNewsInfo inHomeNewsInfo);
+    List<InHomeNewsInfo> selectAllNews(InHomeNewsInfo inHomeNewsInfo);
 }

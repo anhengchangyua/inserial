@@ -45,23 +45,6 @@ public class NewsInfoController {
         return newsInfo;
     }
 
-//    @GetMapping
-//    @ApiOperation(value = "列表")
-//    public PageTableResponse list(PageTableRequest request) {
-//        return new PageTableHandler(new CountHandler() {
-//
-//            @Override
-//            public int count(PageTableRequest request) {
-//                return newsInfoDao.count(request.getParams());
-//            }
-//        }, new ListHandler() {
-//
-//            @Override
-//            public List<NewsInfo> list(PageTableRequest request) {
-//                return newsInfoDao.list(request.getParams(), request.getOffset(), request.getLimit());
-//            }
-//        }).handle(request);
-//    }
 
     @DeleteMapping("/{id}")
     @ApiOperation(value = "删除")

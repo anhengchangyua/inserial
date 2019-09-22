@@ -21,7 +21,9 @@ public class BaseResp<T> {
      * 返回信息描述
      */
     private String message;
-
+    private String total;
+    private String pageNum;
+    private String limit;
     /**
      * 返回数据
      */
@@ -105,4 +107,27 @@ public class BaseResp<T> {
     }
 
 
+    public String getTotal() {
+        return total;
+    }
+
+    public void setTotal(String total) {
+        this.total = total;
+    }
+
+    public String getPageNum() {
+        return pageNum;
+    }
+
+    public void setPageNum(String pageNum) {
+        this.pageNum = pageNum;
+    }
+
+    public String getLimit() {
+        return limit;
+    }
+
+    public void setLimit(String limit) {
+        this.limit = limit;
+    }
 }

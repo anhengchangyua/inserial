@@ -49,7 +49,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         http.authorizeRequests()
-                .antMatchers( "/", "/users/login", "/news/**")
+                .antMatchers( "/", "/users/login")
                 .permitAll().anyRequest().authenticated();
 		http.formLogin().loginProcessingUrl("/users/login")
 				.successHandler(authenticationSuccessHandler).failureHandler(authenticationFailureHandler).and()
@@ -58,8 +58,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         // 解决不允许显示在iframe的问题
         http.headers().frameOptions().disable();
         http.headers().cacheControl();
-
-
         http.addFilterBefore(tokenFilter, UsernamePasswordAuthenticationFilter.class);
     }
 

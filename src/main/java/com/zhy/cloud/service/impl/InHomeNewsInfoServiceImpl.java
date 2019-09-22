@@ -14,8 +14,8 @@ public class InHomeNewsInfoServiceImpl implements InHomeNewsInfoService {
     @Autowired
     private InHomeNewsInfoDao inHomeNewsInfoDao;
     @Override
-    public List<InHomeNewsInfo> selectAllProjects(InHomeNewsInfo inHomeNewsInfo) {
-        List<InHomeNewsInfo> newsInfoList = inHomeNewsInfoDao.selectAllProjects(inHomeNewsInfo);
+    public List<InHomeNewsInfo> selectAllNews(InHomeNewsInfo inHomeNewsInfo) {
+        List<InHomeNewsInfo> newsInfoList = inHomeNewsInfoDao.selectAllNews(inHomeNewsInfo);
         return newsInfoList;
 
     }

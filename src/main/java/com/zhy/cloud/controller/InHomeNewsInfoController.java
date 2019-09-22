@@ -7,6 +7,7 @@ import com.zhy.cloud.dto.Page;
 import com.zhy.cloud.model.InHomeNewsInfo;
 import com.zhy.cloud.service.InHomeNewsInfoService;
 import com.zhy.cloud.utils.BaseResp;
+import com.zhy.cloud.utils.ResultStatus;
 import com.zhy.cloud.utils.Tool;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,24 +22,26 @@ import java.util.List;
 @RequestMapping("/news")
 public class InHomeNewsInfoController {
 
-    @Autowired
+    private final
     InHomeNewsInfoService inHomeNewsInfoService;
+
+    @Autowired
+    public InHomeNewsInfoController(InHomeNewsInfoService inHomeNewsInfoService) {
+        this.inHomeNewsInfoService = inHomeNewsInfoService;
+    }
 
     @GetMapping(value = "/list")
     @ApiOperation(value = "列表")
-    public BaseResp list( InHomeNewsInfo newsInfo) {
+    public BaseResp list(InHomeNewsInfo newsInfo) {
         BaseResp result = new BaseResp();
-        Page page = new Page();
-        PageHelper.startPage(page.getPageNum(), page.getLimit());
-        List<InHomeNewsInfo> newsInfoList = inHomeNewsInfoService.selectAllProjects(newsInfo);
+        PageHelper.startPage(newsInfo.getPageNum(), newsInfo.getLimit());
+        List<InHomeNewsInfo> newsInfoList = inHomeNewsInfoService.selectAllNews(newsInfo);
         PageInfo<InHomeNewsInfo> newsInfoPageInfo = new PageInfo<>(newsInfoList);
-        List<InHomeNewsInfo> list = newsInfoPageInfo.getList();
-        page.setDatas(list);
-        page.setPageNum(newsInfoPageInfo.getPageNum());
-        page.setTotal((int) newsInfoPageInfo.getTotal());
-        result.setData(page);
-        result.setCode(page.getCode());
-        result.setMessage(page.getMessage());
+        result.setData(newsInfoPageInfo.getList());
+        result.setCode(ResultStatus.getCode("SUCCESS"));
+        result.setTotal(String.valueOf(newsInfoPageInfo.getTotal()));
+        result.setPageNum(String.valueOf(newsInfoPageInfo.getPageNum()));
+        result.setLimit(String.valueOf(newsInfo.getLimit()));
         return result;
     }
 

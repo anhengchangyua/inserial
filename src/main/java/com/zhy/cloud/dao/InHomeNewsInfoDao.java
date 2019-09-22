@@ -14,5 +14,5 @@ public interface InHomeNewsInfoDao   {
      * @param inHomeNewsInfo
      * @return
      */
-    List<InHomeNewsInfo> selectAllProjects(InHomeNewsInfo inHomeNewsInfo);
+    List<InHomeNewsInfo> selectAllNews(InHomeNewsInfo inHomeNewsInfo);
 }
